@@ -69,23 +69,52 @@
      </v-container>
 
      <!-- Footer -->
-      <v-container max-width="100%">
+      <v-container max-width="100%" class="mt-16 bg-secondary" >
         <v-row>
             <v-col md="4">
-                <v-card>
+                <v-card height="300px" color="secondary" flat>
                     <v-card-title>Subscribe to our mailing list</v-card-title>
                     <v-card-text>Get the latest news, health tips, and hospital updates delivered to your inbox.</v-card-text>
-                    <v-text-field v-model="inputValue" label="Email address" outlined class="ma-4">
+                    <v-text-field v-model="inputValue" label="Email address" outlined class="ma-4" bg-color="white">
                         <template v-slot:append-inner>
                         <v-btn color="primary" > Subscribe </v-btn>
                         </template>
                     </v-text-field>
-                    <div class="text-center">
+                    <div class="text-center mb-4">
                         <p>Follow us on:</p>
                         <v-icon icon="mdi-instagram"></v-icon>
                         <v-icon icon="mdi-twitter"></v-icon>
                         <v-icon icon="mdi-facebook"></v-icon>
                     </div>
+                </v-card>
+            </v-col>
+            <v-col md="4">
+                <v-card height="300px" color="secondary" flat>
+                    <v-card-title> Contact Information</v-card-title>
+                    <v-card-text>
+                        <p>
+                            <v-icon icon="mdi-map-marker-radius-outline"></v-icon>
+                            The Madaraka Hospital
+                        </p>
+                        <p> 123, Main Street Madaraka, Nairobi </p>
+                        <p>
+                            <v-icon icon="mdi-phone-outline"></v-icon>
+                            +254712345678
+                        </p>
+                        <p>
+                            <v-icon icon="mdi-email-outline"></v-icon>
+                            info@madarakahospital.com
+                        </p>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+            <v-col>
+                <v-card height="300px" color="secondary" flat>
+                    <v-card-title> Quick Links</v-card-title>
+                    <v-card-text>About Us</v-card-text>
+                    <v-card-text>Clinics</v-card-text>
+                    <v-card-text>Find a Doctor</v-card-text>
+                    <v-card-text>News and Events</v-card-text>
                 </v-card>
             </v-col>
         </v-row>
