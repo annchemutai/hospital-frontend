@@ -1,11 +1,16 @@
 <script setup>
 import { ref } from 'vue'
-// import {useAuth}  from '../services/auth'
+import {useAuth}  from '../services/auth'
 import { useRouter } from "vue-router";
 const router = useRouter();
 
-// const { signup } = useAuth()
+const { signup } = useAuth()
 
+//data models
+const firstname = ref(null)
+const lastname = ref(null)
+const email = ref(null)
+const phone = ref(null)
 const showPassword = ref(false)
 const password = ref(null) //model
 
@@ -14,16 +19,12 @@ const showConfirm = ref(false)
 const rules = {
     required: value => !!value || 'Required.', // if statement
     min: v => v.length >= 8 || 'Min 8 characters', // if statement
-    passwordMatch: () => password.value === confirmPassword.value || 'Passwords must match' //function
+    passwordMatch: () => password.value == confirmPassword.value || 'Passwords must match' //function
   }
 
-//data models
-const firstname = ref(null)
-const lastname = ref(null)
-const email = ref(null)
-const phone = ref(null)
 
-function register()
+
+function handleSignup()
 {
     const data = {
         firstname: firstname.value,
@@ -31,12 +32,10 @@ function register()
         email: email.value,
         phone: phone.value,
         password: password.value,
-        role: 2,
-
-        // role 1 is for admin, role 2 is for nurse
+        role: 2, 
     }
-    // signup(data)
-    router.push('/').then(() => {
+    signup(data)
+    router.push('/homepage').then(() => {
         router.go(0)
     });
 }
@@ -109,7 +108,7 @@ function register()
                         </v-row>
                         <v-row>
                             <v-col md="6">
-                                <v-btn @click="register()" block>Sign Up</v-btn>
+                                <v-btn @click="handleSignup()" block>Sign Up</v-btn>
                             </v-col>
                             <v-col md="6">
                                 <div>

@@ -1,12 +1,10 @@
 <script setup>
 import { ref } from 'vue'
-// import {useAuth}  from '../services/auth'
+import {useAuth}  from '../services/auth'
 import { useRouter } from "vue-router";
 
 const router = useRouter();
-// const { checkCredentials } = useAuth()
-
-
+const { login } = useAuth()
 
 //data models
 const email = ref(null)
@@ -17,14 +15,14 @@ const rules = {
     min: v => v.length >= 8 || 'Min 8 characters', 
   }
 
-function login()
+function handleLogin()
 {
     const data = {
         email: email.value,
         password: password.value,
     }
-    // checkCredentials(data)
-    router.push('/').then(() => {
+    login(data)
+    router.push('/homepage').then(() => {
         router.go(0)
     });
 }
@@ -64,7 +62,7 @@ function login()
                         </v-row>
                         <v-row>
                             <v-col>
-                                <v-btn @click="login()" >Login</v-btn>
+                                <v-btn @click="handleLogin()" >Login</v-btn>
                             </v-col>
                              </v-row>
                         <v-row>
