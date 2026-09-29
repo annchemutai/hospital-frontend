@@ -1,7 +1,12 @@
 <script setup>
 import {ref, computed} from 'vue'
 import { usePatientsStore } from '../../stores/patients'
+import { bloodPressureRule, heightRule, pulseRule, required, temperatureRule, weightRule } from '@/services/validatonRules'
 const patientsStore = usePatientsStore()
+
+const maxDate = computed(() => {
+  return new Date().toISOString().split('T')[0]
+})
 
 // models
 const visitDate = ref(null)
@@ -43,6 +48,8 @@ const fields = [
   { label: 'Pulse Rate', key: 'pulseRate', unit: 'bpm' },
   { label: 'Complaint', key: 'complaint' },
 ]
+
+
 </script>
 
 <template>
@@ -61,34 +68,34 @@ const fields = [
             <v-card class="pa-12">
                 <v-row>
                     <v-col md="6">
-                        <v-date-input label="Visit Date" variant="outlined" v-model="visitDate"></v-date-input>
+                        <v-date-input label="Visit Date" variant="outlined" v-model="visitDate" :max="maxDate"></v-date-input>
                     </v-col>
                     <v-col md="6">
                         
-                        <v-text-field label="Time" variant="outlined" type="time" prepend-icon="mdi-" v-model="time"></v-text-field>
+                        <v-text-field label="Time" variant="outlined" type="time" prepend-icon="mdi-" v-model="time" ></v-text-field>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col md="6">
-                        <v-text-field label="Weight" variant="outlined" prepend-icon="mdi-weight" v-model="weight"></v-text-field>
+                        <v-text-field label="Weight" variant="outlined" prepend-icon="mdi-weight" v-model="weight" :rules="[weightRule]"></v-text-field>
                     </v-col>
                     <v-col md="6">
-                        <v-text-field label="Height" variant="outlined" prepend-icon="mdi-human-male-height-variant" v-model="height"></v-text-field>
+                        <v-text-field label="Height" variant="outlined" prepend-icon="mdi-human-male-height-variant" v-model="height" :rules="[heightRule]"></v-text-field>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col md="6">
-                        <v-text-field label="Blood Pressure" variant="outlined" prepend-icon="mdi-heart-pulse" v-model="bp"></v-text-field>
+                        <v-text-field label="Blood Pressure" variant="outlined" prepend-icon="mdi-heart-pulse" v-model="bp" :rules="[bloodPressureRule]"></v-text-field>
                     </v-col>
                     <v-col md="6">
-                        <v-text-field label="Temperature" variant="outlined" prepend-icon="mdi-thermometer" v-model="temperature"></v-text-field>
+                        <v-text-field label="Temperature" variant="outlined" prepend-icon="mdi-thermometer" v-model="temperature" :rules="[temperatureRule]"></v-text-field>
                     </v-col>
                 </v-row>
                 <v-row><v-col md="6">
-                        <v-text-field label="Pulse Rate" variant="outlined" prepend-icon="mdi-pulse" v-model="pulseRate"></v-text-field>
+                        <v-text-field label="Pulse Rate" variant="outlined" prepend-icon="mdi-pulse" v-model="pulseRate" :rules="[pulseRule]"></v-text-field>
                     </v-col>
                     <v-col md="6">
-                        <v-textarea label="Complaint" variant="outlined" prepend-icon="mdi-file-document-outline" v-model="complaint"></v-textarea>
+                        <v-textarea label="Complaint" variant="outlined" prepend-icon="mdi-file-document-outline" v-model="complaint"  :rules="[required]"></v-textarea>
                     </v-col>
                 </v-row>
                 <v-divider class="mb-4" color="primary" opacity=".7" thickness="3" gradient></v-divider>
