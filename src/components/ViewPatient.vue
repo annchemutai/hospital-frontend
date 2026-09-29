@@ -1,24 +1,43 @@
 <script setup>
-import {ref} from 'vue'
+import {computed, ref} from 'vue'
+import { onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { usePatientsStore } from '../stores/patients'
+
 import Triage from './view-patient/Triage.vue';
 import Consultation from './view-patient/Consultation.vue';
 import Lab from './view-patient/Lab.vue';
 import Prescription from './view-patient/Prescription.vue';
 
+const patientsStore = usePatientsStore()
+const route = useRoute()
+
 const tab = ref(null)
+const age = computed(()=>{
+    let dob = new Date(patientsStore.selectedPatient.dob)
+    let today = new Date()
+    return today.getFullYear() - dob.getFullYear()
+})
+
+onMounted(() => {
+    const id = Number(route.params.id)
+    patientsStore.selectPatient(id)
+
+})
 </script>
 
 <template>
+    <div>
     <v-container class="mt-12">
         <v-row >
             <v-col md="3">
                 <v-btn color="primary" icon="mdi-arrow-left" to="/patients"></v-btn>
             </v-col>
             <v-col md="3">
-                <div class="text-title-medium font-weight-medium">Name</div>
+                <div class="text-title-medium font-weight-medium">Name: {{patientsStore.selectedPatient.firstName}}</div>
             </v-col>
             <v-col md="3">
-                <div class="text-title-medium font-weight-medium" >Age</div>
+                <div class="text-title-medium font-weight-medium" >Age: </div>
             </v-col>
             <v-col md="3">
                 <div class="text-title-medium font-weight-medium">Outpatient</div>
@@ -56,4 +75,5 @@ const tab = ref(null)
             </v-tabs-window-item>
         </v-tabs-window>
     </v-container>    
+    </div>
 </template>

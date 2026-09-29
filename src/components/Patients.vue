@@ -1,48 +1,17 @@
 <script setup>
 import {ref} from 'vue'
+import { usePatientsStore } from '../stores/patients'
+import { useRouter } from "vue-router";
 
-const patients = [
-    {
-        id: 1,
-        firstName: "John",
-        lastName: "Doe",
-        email: "johndoe@example.com",
-        phone: "0721345897",
-        residence: "123, Main Street",
-        nationalId: "12345678",
-        dob: "1995-04-03"
-    },
-    {
-        id: 2,
-        firstName: "Jane",
-        lastName: "Doe",
-        email: "janedoe@example.com",
-        phone: "0790345897",
-        residence: "124, Main Street",
-        nationalId: "22345678",
-        dob: "1998-06-03"
-    },
-    {
-        id: 3,
-        firstName: "Jack",
-        lastName: "Doe",
-        email: "jackdoe@example.com",
-        phone: "0787345897",
-        residence: "125, Side Street",
-        nationalId: "98745678",
-        dob: "1999-04-04"
-    },
-    {
-        id: 4,
-        firstName: "Joseph",
-        lastName: "Doe",
-        email: "josephdoe@example.com",
-        phone: "0729745897",
-        residence: "823, Side Street",
-        nationalId: "76345678",
-        dob: "2005-09-03"
-    }
-]
+const router = useRouter();
+const patientsStore = usePatientsStore()
+const patients = patientsStore.patients
+
+const viewPatient = (patientId) => {
+  patientsStore.selectPatient(patientId)
+  
+  router.push({ name: 'ViewPatient', params: { id: patientId } })
+}
 
 const showAddDialog = ref(false)
 
@@ -57,7 +26,7 @@ const dob = ref(null)
 
 function handleAddPatient(){
     const data = {
-        id: 5,
+       
         firstName: firstName.value,
         lastName: lastName.value,
         email: email.value,
@@ -66,9 +35,9 @@ function handleAddPatient(){
         nationalId: nationalId.value,
         dob: dob.value,
     }
-        patients.push(data)
+        patientsStore.addPatient(data)
         showAddDialog.value = false
-        console.log(patients)
+     
 }
 
 </script>
@@ -76,15 +45,22 @@ function handleAddPatient(){
 <template>
     <v-container class="mt-6">
         <v-row>
-            <v-col md="10">
+            <v-col md="8">
                 <h1>Patients</h1>
             </v-col>
             <v-col md="2">
                 <v-btn class="ma-2" color="primary" icon="mdi-plus" @click="showAddDialog = true"></v-btn>
             </v-col>
+            <v-col md="2">
+                <v-btn class="ma-2"color="error" @click="patientsStore.resetPatients" > Reset Test Data </v-btn>
+            </v-col>
         </v-row>
 
         <v-row>
+            <div v-if="patients.length == 0 || patients == null">
+                No data
+            </div>
+            <div v-else>
             <v-col>
                 <v-table class="border" striped="even">
                     <thead>
@@ -106,11 +82,12 @@ function handleAddPatient(){
                             <td>{{ item.residence }}</td>
                             <td>{{ item.nationalId }}</td>
                             <td>{{ item.dob }}</td>
-                            <td> <v-btn color="primary" size="small" to="/viewpatient"> <v-icon icon="mdi-eye"></v-icon> View </v-btn> </td>
+                            <td> <v-btn color="primary" size="small" @click="viewPatient(item.id)"> <v-icon icon="mdi-eye"></v-icon> View </v-btn> </td>
                         </tr>
                     </tbody>
                 </v-table>
             </v-col>
+            </div>
         </v-row>
     </v-container>
 
